@@ -1,5 +1,4 @@
 # code adapted from from opencpu/debian:10
-# opencpu without rstudio and with specific libraries as a base version
 
 FROM debian:buster
 
@@ -13,9 +12,9 @@ RUN \
   apt-get update && \
   apt-get -y dist-upgrade && \
   apt-get install -y wget make devscripts apache2-dev apache2 libapreq2-dev r-base r-base-dev libapparmor-dev libcurl4-openssl-dev libprotobuf-dev protobuf-compiler libcairo2-dev xvfb xauth xfonts-base curl libssl-dev libxml2-dev libicu-dev pkg-config libssh2-1-dev locales apt-utils && \
-  useradd -ms /bin/bash builder
   #specific libraries
-  && apt-get install -y --no-install-recommends file git zlib1g-dev libapparmor1 libclang-dev libcurl4-gnutls-dev libgit2-dev libedit2 libssl-dev lsb-release multiarch-support psmisc procps python-setuptools sudo && \
+  apt-get install -y --no-install-recommends libclang-dev libgit2-dev multiarch-support python-setuptools && \
+  useradd -ms /bin/bash builder
 
 # Note: this is different from Ubuntu (c.f. 'language-pack-en-base')
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
@@ -51,5 +50,6 @@ RUN \
 
 # Apache ports
 EXPOSE 80
-EXPOSE 443
 EXPOSE 8004
+
+CMD apachectl -DFOREGROUND
